@@ -1,0 +1,75 @@
+<div class="detail-container">
+  <button (click)="goBack()" class="btn-back">← Volver al Catálogo</button>
+
+  <div *ngIf="loading" class="loading">Cargando detalles del producto...</div>
+
+  <div *ngIf="product && !loading" class="product-detail">
+    <div class="detail-image">
+      <img [src]="product.images[currentImageIndex]" alt="{{ product.title }}" class="main-image">
+      <div *ngIf="product.images.length > 1" class="image-nav">
+        <button (click)="prevImage()" class="btn-nav">❮</button>
+        <span>{{ currentImageIndex + 1 }} / {{ product.images.length }}</span>
+        <button (click)="nextImage()" class="btn-nav">❯</button>
+      </div>
+      <div class="thumbnail-list">
+        <img *ngFor="let img of product.images; let i = index" 
+             [src]="img" 
+             [class.active]="i === currentImageIndex"
+             (click)="currentImageIndex = i"
+             class="thumbnail">
+      </div>
+    </div>
+
+    <div class="detail-info">
+      <h1>{{ product.title }}</h1>
+      <p class="category">{{ product.category }}</p>
+      
+      <div class="rating-section">
+        <span class="stars">⭐ {{ product.rating }} / 5</span>
+      </div>
+
+      <div class="price-section">
+        <span class="price">${{ product.price | number: '1.2-2' }}</span>
+        <span class="stock" [class.out-of-stock]="product.stock === 0">
+          Stock: {{ product.stock > 0 ? product.stock : 'Agotado' }}
+        </span>
+      </div>
+
+      <div class="description-section">
+        <h3>Descripción</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div *ngIf="product.dimensions" class="dimensions-section">
+        <h3>Dimensiones</h3>
+        <p>{{ product.dimensions }}</p>
+      </div>
+
+      <div class="reviews-section">
+        <h3>Reseñas de Clientes</h3>
+        <div *ngIf="product.reviews && product.reviews.length > 0" class="reviews-list">
+          <div *ngFor="let review of product.reviews" class="review-item">
+            <div class="review-header">
+              <strong>{{ review.reviewerName }}</strong>
+              <span class="review-rating">⭐ {{ review.rating }}</span>
+            </div>
+            <p class="review-text">{{ review.comment }}</p>
+          </div>
+        </div>
+        <p *ngIf="!product.reviews || product.reviews.length === 0" class="no-reviews">No hay reseñas disponibles</p>
+      </div>
+
+      <div class="purchase-section">
+        <div class="quantity-selector">
+          <label>Cantidad:</label>
+          <button (click)="decreaseQuantity()" class="qty-btn" [disabled]="quantity === 1">-</button>
+          <input type="number" [(ngModel)]="quantity" class="qty-input" [max]="product.stock">
+          <button (click)="increaseQuantity()" class="qty-btn" [disabled]="quantity >= product.stock">+</button>
+        </div>
+        <button (click)="addToCart()" class="btn-buy" [disabled]="product.stock === 0">
+          Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

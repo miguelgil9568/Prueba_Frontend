@@ -1,0 +1,27 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <a routerLink="/" class="brand-link">
+        <span class="logo">🛒</span>
+        <span class="brand-text">Tienda Online</span>
+      </a>
+    </div>
+    <div class="nav-items">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link">
+        Catálogo
+      </a>
+      <a routerLink="/cart" routerLinkActive="active" class="nav-link cart-link">
+        <span class="cart-icon">🛒</span>
+        <span>Carrito</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>
+
+<footer class="footer">
+  <p>&copy; 2024 Catálogo de Productos. Prueba Técnica Jaime Torres C y CIA S.A</p>
+</footer>
