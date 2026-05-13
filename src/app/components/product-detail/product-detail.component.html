@@ -42,7 +42,9 @@
 
       <div *ngIf="product.dimensions" class="dimensions-section">
         <h3>Dimensiones</h3>
-        <p>{{ product.dimensions }}</p>
+        <p>Ancho: {{ product.dimensions.width }}</p>
+        <p>Alto: {{ product.dimensions.height }}</p>
+        <p>Profundidad: {{ product.dimensions.depth }}</p>
       </div>
 
       <div class="reviews-section">
