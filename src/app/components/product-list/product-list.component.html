@@ -1,51 +1,83 @@
 <div class="product-list-container">
   <div class="header">
-    <h1>Catálogo de Productos</h1>
+      <div>
+      <h1>Catálogo de Productos</h1>
+    </div>
     <div class="sort-controls">
       <label for="sort">Ordenar por:</label>
-      <select id="sort" (change)="onSortChange($event)" class="sort-select">
-        <option value="title">Nombre (A-Z)</option>
-        <option value="priceAsc">Precio (Menor a Mayor)</option>
-        <option value="priceDesc">Precio (Mayor a Menor)</option>
-        <option value="ratingAsc">Calificación (Menor a Mayor)</option>
-        <option value="ratingDesc">Calificación (Mayor a Menor)</option>
-      </select>
+      <p-dropdown 
+        id="sort"
+        [options]="sortOptions" 
+        [(ngModel)]="sortBy"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="onSortChange($event)"
+        styleClass="w-full">
+      </p-dropdown>
     </div>
   </div>
 
-  <div *ngIf="loading" class="loading">Cargando productos...</div>
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #007bff;"></i>
+    <p>Cargando productos...</p>
+  </div>
 
-  <div class="products-grid">
-    <div *ngFor="let product of filteredProducts" class="product-card">
-      <div class="image-carousel">
-        <img [src]="product.images[currentImageIndex[product.id]]" alt="{{ product.title }}" class="product-image">
-        <div *ngIf="product.images.length > 1" class="carousel-controls">
-          <button (click)="prevImage(product.id)" class="btn-carousel">❮</button>
-          <span class="image-counter">{{ currentImageIndex[product.id] + 1 }}/{{ product.images.length }}</span>
-          <button (click)="nextImage(product.id)" class="btn-carousel">❯</button>
+  <div class="products-grid" *ngIf="!loading">
+    <p-card *ngFor="let product of filteredProducts" class="product-card">
+      <ng-template pTemplate="header">
+        <div class="image-carousel">
+          <img [src]="product.images[currentImageIndex[product.id]]" alt="{{ product.title }}" class="product-image">
+          <div *ngIf="product.images.length > 1" class="carousel-controls">
+            <p-button 
+              icon="pi pi-chevron-left" 
+              (click)="prevImage(product.id)"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary">
+            </p-button>
+            <span class="image-counter">{{ currentImageIndex[product.id] + 1 }}/{{ product.images.length }}</span>
+            <p-button 
+              icon="pi pi-chevron-right" 
+              (click)="nextImage(product.id)"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary">
+            </p-button>
+          </div>
         </div>
+      </ng-template>
+      
+      <h3 class="product-title">{{ product.title }}</h3>
+      <label>{{ product.category }}</label>
+      
+      <div class="product-meta">
+        <span class="price"><strong>${{ product.price | number: '1.2-2' }}</strong></span>
+        <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
       </div>
       
-      <div class="product-info">
-        <h3 class="product-title">{{ product.title }}</h3>
-        <p class="product-category">{{ product.category }}</p>
-        
-        <div class="product-meta">
-          <span class="price">${{ product.price | number: '1.2-2' }}</span>
-          <span class="rating">⭐ {{ product.rating }}</span>
-        </div>
-        
-        <div class="stock-status" [class.out-of-stock]="product.stock === 0">
-          <span>Stock: {{ product.stock > 0 ? product.stock : 'Agotado' }}</span>
-        </div>
-        
-        <div class="product-actions">
-          <button (click)="viewDetail(product)" class="btn btn-detail">Ver Detalle</button>
-          <button (click)="addToCart(product)" class="btn btn-add-cart" [disabled]="product.stock === 0">
-            Agregar al Carrito
-          </button>
-        </div>
+      <div class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
+        <i class="pi" [ngClass]="product.stock > 0 ? 'pi-check-circle' : 'pi-times-circle'"></i>
+        <span>{{ product.stock > 0 ? 'Stock: ' + product.stock : 'Agotado' }}</span>
       </div>
-    </div>
-  </div>
-</div>
+      
+      <ng-template pTemplate="footer">
+        <div class="product-actions">
+          <p-button 
+            label="Ver Detalle" 
+            icon="pi pi-info-circle"
+            (click)="viewDetail(product)"
+            [text]="true"
+            size="small"
+            severity="info">
+          </p-button>
+          <p-button 
+            label="Agregar" 
+            icon="pi pi-shopping-cart"
+            (click)="addToCart(product)"
+            [disabled]="product.stock === 0"
+            size="small"
+            severity="success">
+          </p-button>
+        </div>
+      </ng-template>
+    </p-card>

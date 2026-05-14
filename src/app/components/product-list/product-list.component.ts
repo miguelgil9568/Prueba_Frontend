@@ -13,6 +13,13 @@ export class ProductListComponent implements OnInit {
   loading = true;
   sortBy = 'title';
   currentImageIndex: { [key: number]: number } = {};
+  sortOptions = [
+    { label: 'Nombre (A-Z)', value: 'title' },
+    { label: 'Precio (Menor a Mayor)', value: 'priceAsc' },
+    { label: 'Precio (Mayor a Menor)', value: 'priceDesc' },
+    { label: 'Calificación (Menor a Mayor)', value: 'ratingAsc' },
+    { label: 'Calificación (Mayor a Menor)', value: 'ratingDesc' }
+  ];
 
   constructor(private productService: ProductService, private router: Router) {}
 
@@ -35,8 +42,7 @@ export class ProductListComponent implements OnInit {
   }
 
   onSortChange(event: any): void {
-    const sortValue = event.target.value;
-    this.sortBy = sortValue;
+    const sortValue = event.value || this.sortBy;
 
     switch (sortValue) {
       case 'priceAsc':

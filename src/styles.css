@@ -1,3 +1,8 @@
+/* PrimeNG Styles */
+@import 'primeng/resources/themes/lara-light-blue/theme.css';
+@import 'primeng/resources/primeng.css';
+@import 'primeicons/primeicons.css';
+
 * {
   margin: 0;
   padding: 0;
@@ -6,9 +11,10 @@
 
 html, body {
   height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   background-color: #f8f9fa;
+  line-height: 1.6;
 }
 
 body {
@@ -23,6 +29,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 input[type="number"] {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 
@@ -37,7 +44,8 @@ a {
 
 /* Scrollbar personalizado */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -45,10 +53,94 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+  background: #007bff;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #0056b3;
+}
+
+/* PrimeNG customizations */
+.p-card {
+  border-radius: 8px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  overflow: hidden !important;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.p-button {
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
+}
+
+.p-button.p-button-raised:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16) !important;
+}
+
+.p-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.app-btn {
+  min-width: 180px;
+}
+
+.app-btn-full {
+  width: 100%;
+}
+
+.app-btn-soft.p-button {
+  background: var(--surface-100) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--surface-300) !important;
+}
+
+.app-btn-soft.p-button:hover:not(:disabled) {
+  background: var(--surface-200) !important;
+}
+
+.p-dropdown {
+  border-radius: 6px !important;
+}
+
+.p-tag {
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+  padding: 6px 12px !important;
+}
+
+.p-rating {
+  gap: 8px !important;
+}
+
+.p-inputnumber {
+  border-radius: 6px !important;
+}
+
+.p-divider {
+  border-color: #e0e0e0 !important;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .p-card {
+    margin-bottom: 10px;
+  }
 }
