@@ -1,15 +1,33 @@
 <div class="detail-container">
-  <button (click)="goBack()" class="btn-back">← Volver al Catálogo</button>
+  <p-button 
+    label="Volver al Catálogo" 
+    icon="pi pi-arrow-left"
+    (click)="goBack()"
+    severity="secondary">
+  </p-button>
 
-  <div *ngIf="loading" class="loading">Cargando detalles del producto...</div>
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem; color: #007bff;"></i>
+    <p>Cargando detalles del producto...</p>
+  </div>
 
   <div *ngIf="product && !loading" class="product-detail">
     <div class="detail-image">
       <img [src]="product.images[currentImageIndex]" alt="{{ product.title }}" class="main-image">
       <div *ngIf="product.images.length > 1" class="image-nav">
-        <button (click)="prevImage()" class="btn-nav">❮</button>
+        <p-button 
+          icon="pi pi-chevron-left" 
+          (click)="prevImage()"
+          [rounded]="true"
+          severity="secondary">
+        </p-button>
         <span>{{ currentImageIndex + 1 }} / {{ product.images.length }}</span>
-        <button (click)="nextImage()" class="btn-nav">❯</button>
+        <p-button 
+          icon="pi pi-chevron-right" 
+          (click)="nextImage()"
+          [rounded]="true"
+          severity="secondary">
+        </p-button>
       </div>
       <div class="thumbnail-list">
         <img *ngFor="let img of product.images; let i = index" 
@@ -22,55 +40,74 @@
 
     <div class="detail-info">
       <h1>{{ product.title }}</h1>
-      <p class="category">{{ product.category }}</p>
+      <p-tag [value]="product.category" [severity]="'info'" styleClass="mb-3"></p-tag>
       
       <div class="rating-section">
-        <span class="stars">⭐ {{ product.rating }} / 5</span>
+        <p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false"></p-rating>
       </div>
+
+      <p-divider></p-divider>
 
       <div class="price-section">
-        <span class="price">${{ product.price | number: '1.2-2' }}</span>
-        <span class="stock" [class.out-of-stock]="product.stock === 0">
-          Stock: {{ product.stock > 0 ? product.stock : 'Agotado' }}
-        </span>
+        <h2 class="price">${{ product.price | number: '1.2-2' }}</h2>
+        <p-tag 
+          [value]="product.stock > 0 ? 'Stock: ' + product.stock : 'Agotado'" 
+          [severity]="product.stock > 0 ? 'success' : 'danger'"
+          styleClass="ml-3">
+        </p-tag>
       </div>
 
+      <p-divider></p-divider>
+
       <div class="description-section">
-        <h3>Descripción</h3>
+        <h3><i class="pi pi-file-edit"></i> Descripción</h3>
         <p>{{ product.description }}</p>
       </div>
 
       <div *ngIf="product.dimensions" class="dimensions-section">
-        <h3>Dimensiones</h3>
+        <h3><i class="pi pi-box"></i> Dimensiones</h3>
         <p>Ancho: {{ product.dimensions.width }}</p>
         <p>Alto: {{ product.dimensions.height }}</p>
         <p>Profundidad: {{ product.dimensions.depth }}</p>
       </div>
 
       <div class="reviews-section">
-        <h3>Reseñas de Clientes</h3>
+        <h3><i class="pi pi-comments"></i> Reseñas de Clientes</h3>
         <div *ngIf="product.reviews && product.reviews.length > 0" class="reviews-list">
           <div *ngFor="let review of product.reviews" class="review-item">
             <div class="review-header">
               <strong>{{ review.reviewerName }}</strong>
-              <span class="review-rating">⭐ {{ review.rating }}</span>
+              <p-tag [value]="'⭐ ' + review.rating"></p-tag>
             </div>
             <p class="review-text">{{ review.comment }}</p>
           </div>
         </div>
-        <p *ngIf="!product.reviews || product.reviews.length === 0" class="no-reviews">No hay reseñas disponibles</p>
+        <p *ngIf="!product.reviews || product.reviews.length === 0" class="no-reviews">
+          <i class="pi pi-info-circle"></i> No hay reseñas disponibles
+        </p>
       </div>
+
+      <p-divider></p-divider>
 
       <div class="purchase-section">
         <div class="quantity-selector">
           <label>Cantidad:</label>
-          <button (click)="decreaseQuantity()" class="qty-btn" [disabled]="quantity === 1">-</button>
-          <input type="number" [(ngModel)]="quantity" class="qty-input" [max]="product.stock">
-          <button (click)="increaseQuantity()" class="qty-btn" [disabled]="quantity >= product.stock">+</button>
+          <p-inputNumber 
+            [(ngModel)]="quantity" 
+            [min]="1" 
+            [max]="product.stock"
+            [buttonLayout]="'stacked'"
+            styleClass="w-full">
+          </p-inputNumber>
         </div>
-        <button (click)="addToCart()" class="btn-buy" [disabled]="product.stock === 0">
-          Agregar al Carrito
-        </button>
+        <p-button 
+          label="Agregar al Carrito" 
+          icon="pi pi-shopping-cart"
+          (click)="addToCart()"
+          [disabled]="product.stock === 0"
+          severity="success"
+          size="large">
+        </p-button>
       </div>
     </div>
   </div>

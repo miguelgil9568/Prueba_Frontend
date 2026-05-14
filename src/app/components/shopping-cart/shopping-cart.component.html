@@ -1,48 +1,101 @@
 <div class="cart-container">
-  <h1>Carrito de Compras</h1>
+  <h1><i class="pi pi-shopping-cart"></i> Carrito de Compras</h1>
 
   <div *ngIf="cartItems.length === 0" class="empty-cart">
+    <i class="pi pi-inbox" style="font-size: 3rem; color: #ccc;"></i>
     <p>Tu carrito está vacío</p>
-    <button (click)="continueShopping()" class="btn btn-continue">Continuar Comprando</button>
+    <p-button 
+      label="Continuar Comprando" 
+      icon="pi pi-arrow-left"
+      (click)="continueShopping()"
+      severity="primary"
+      [raised]="true"
+      styleClass="app-btn"
+      size="large">
+    </p-button>
   </div>
 
   <div *ngIf="cartItems.length > 0" class="cart-content">
     <div class="cart-items">
-      <div *ngFor="let item of cartItems" class="cart-item">
-        <img [src]="item.product.images[0]" alt="{{ item.product.title }}" class="item-image">
+      <p-card *ngFor="let item of cartItems" class="cart-item-card">
+        <ng-template pTemplate="header">
+          <div class="item-image-container">
+            <img [src]="item.product.images[0]" alt="{{ item.product.title }}" class="item-image">
+          </div>
+        </ng-template>
+        
         <div class="item-details">
-          <h3>{{ item.product.title }}</h3>
-          <p class="category">{{ item.product.category }}</p>
-          <p class="price">${{ item.product.price | number: '1.2-2' }}</p>
+          <h4 class="item-title">{{ item.product.title }}</h4>
+          <p-tag [value]="item.product.category" [severity]="'info'" styleClass="mb-2"></p-tag>
+          
+          <div class="item-price-qty">
+            <span class="item-price">${{ item.product.price | number: '1.2-2' }}</span>
+            <span class="item-qty">Cantidad: <strong>{{ item.quantity }}</strong></span>
+          </div>
         </div>
-        <div class="item-quantity">
-          <label>Cantidad:</label>
-          <span class="qty">{{ item.quantity }}</span>
-        </div>
+
+        <p-divider></p-divider>
+
         <div class="item-subtotal">
-          <span class="subtotal">${{ (item.product.price * item.quantity) | number: '1.2-2' }}</span>
+          <span class="subtotal-label">Subtotal:</span>
+          <span class="subtotal-value">${{ (item.product.price * item.quantity) | number: '1.2-2' }}</span>
         </div>
-        <button (click)="removeFromCart(item.product.id)" class="btn btn-remove">Eliminar</button>
-      </div>
+
+        <ng-template pTemplate="footer">
+          <div class="item-actions">
+            <p-button 
+              label="Eliminar" 
+              icon="pi pi-trash"
+              (click)="removeFromCart(item.product.id)"
+              severity="danger"
+              [outlined]="true"
+              size="small">
+            </p-button>
+          </div>
+        </ng-template>
+      </p-card>
     </div>
 
     <div class="cart-summary">
+      <h3><i class="pi pi-calculator"></i> Resumen</h3>
+      
       <div class="summary-row">
         <span>Productos:</span>
-        <span>{{ getTotalItems() }}</span>
+        <span class="summary-value">{{ getTotalItems() }}</span>
       </div>
-      <div class="summary-row">
-        <span>Subtotal:</span>
-        <span>${{ getTotalPrice() | number: '1.2-2' }}</span>
-      </div>
+
+      <p-divider></p-divider>
+
       <div class="summary-row total">
         <span>Total:</span>
-        <span>${{ getTotalPrice() | number: '1.2-2' }}</span>
+        <span class="summary-value total-price">${{ getTotalPrice() | number: '1.2-2' }}</span>
       </div>
+
       <div class="summary-actions">
-        <button (click)="continueShopping()" class="btn btn-continue">Continuar Comprando</button>
-        <button (click)="checkout()" class="btn btn-checkout">Proceder al Pago</button>
-        <button (click)="clearCart()" class="btn btn-clear">Vaciar Carrito</button>
+        <p-button 
+          label="Continuar Comprando" 
+          icon="pi pi-arrow-left"
+          (click)="continueShopping()"
+          [outlined]="true"
+          severity="secondary"
+          styleClass="app-btn-full app-btn-soft">
+        </p-button>
+        <p-button 
+          label="Proceder al Pago" 
+          icon="pi pi-credit-card"
+          (click)="checkout()"
+          severity="success"
+          [raised]="true"
+          styleClass="app-btn-full">
+        </p-button>
+        <p-button 
+          label="Vaciar Carrito" 
+          icon="pi pi-times"
+          (click)="clearCart()"
+          severity="warning"
+          [outlined]="true"
+          styleClass="app-btn-full">
+        </p-button>
       </div>
     </div>
   </div>
