@@ -1,6 +1,6 @@
 <div class="product-list-container">
   <div class="header">
-    <div>
+      <div>
       <h1>Catálogo de Productos</h1>
     </div>
     <div class="sort-controls">
@@ -47,8 +47,8 @@
         </div>
       </ng-template>
       
-      <h4 class="product-title">{{ product.title }}</h4>
-      <p-tag [value]="product.category" [severity]="'info'"></p-tag>
+      <h3 class="product-title">{{ product.title }}</h3>
+      <label>{{ product.category }}</label>
       
       <div class="product-meta">
         <span class="price"><strong>${{ product.price | number: '1.2-2' }}</strong></span>
@@ -67,6 +67,7 @@
             icon="pi pi-info-circle"
             (click)="viewDetail(product)"
             [text]="true"
+            size="small"
             severity="info">
           </p-button>
           <p-button 
@@ -74,10 +75,9 @@
             icon="pi pi-shopping-cart"
             (click)="addToCart(product)"
             [disabled]="product.stock === 0"
+            size="small"
             severity="success">
           </p-button>
         </div>
       </ng-template>
     </p-card>
-  </div>
-</div>

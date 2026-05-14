@@ -41,6 +41,6 @@ export class ShoppingCartComponent implements OnInit {
   }
 
   checkout(): void {
-    alert('Funcionalidad de compra no disponible en esta versión de prueba.');
+    alert('Gracias por tu compra, vuelve pronto. :)');
   }
 }
